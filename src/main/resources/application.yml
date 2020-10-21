@@ -9,3 +9,15 @@ spring:
       path: /h2-console
   jpa:
     show-sql: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /internal
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
