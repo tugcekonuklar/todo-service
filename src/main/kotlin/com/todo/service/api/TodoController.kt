@@ -1,10 +1,15 @@
 package com.todo.service.api
 
+import com.todo.service.api.dto.TodoRequest
+import com.todo.service.api.dto.TodoResponse
+import com.todo.service.api.dto.TodoUpdateRequest
+import com.todo.service.domain.Todo
+import com.todo.service.service.CreateCommand
 import com.todo.service.service.TodoService
+import com.todo.service.service.UpdateTodoCommand
 import lombok.extern.slf4j.Slf4j
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
 
 @Slf4j
 @RestController
@@ -12,9 +17,34 @@ import org.springframework.web.bind.annotation.RestController
 class TodoController(val todoService: TodoService) {
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     fun retrieveTodoList(): List<TodoResponse> {
         return todoService.retrieveTodoList()
-                .map { TodoResponse(it.id, it.title, it.content, it.status, it.duaDate, it.createdAt) }
+                .map { toResponse(it) }
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun retrieveTodoById(@PathVariable id: Long): TodoResponse = toResponse(todoService.retrieveById(id));
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    fun create(@RequestBody request: TodoRequest): TodoResponse = toResponse(todoService.create(toCreateCommand(request)));
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun update(@RequestBody request: TodoUpdateRequest): TodoResponse = toResponse(todoService.update(toUpdateCommand(request)));
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun delete(@PathVariable id: Long) = todoService.delete(id);
+
+    fun toResponse(todo: Todo): TodoResponse =
+            TodoResponse(todo.id, todo.title, todo.content, todo.status, todo.dueDate, todo.createdAt, todo.updatedAt)
+
+    fun toCreateCommand(request: TodoRequest): CreateCommand =
+            CreateCommand(request.title, request.content, request.dueDate)
+
+    fun toUpdateCommand(request: TodoUpdateRequest): UpdateTodoCommand =
+            UpdateTodoCommand(request.id, request.title, request.content, request.dueDate)
 }

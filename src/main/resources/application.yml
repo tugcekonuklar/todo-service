@@ -1,9 +1,8 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:tododb
-    username: todo
-    password: todo
-
+    url: jdbc:h2:mem:todosdb
+    username: todos
+    password: todos
   h2:
     console:
       enabled: true
