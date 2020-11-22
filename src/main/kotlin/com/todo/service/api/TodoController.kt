@@ -37,7 +37,7 @@ class TodoController(val todoService: TodoService) {
     @ResponseStatus(HttpStatus.OK)
     fun update(@RequestBody request: TodoUpdateRequest, @PathVariable id: Long): TodoResponse = toResponse(todoService.update(toUpdateCommand(request,id)));
 
-    @PatchMapping("/{id}/complete")
+    @PutMapping("/{id}/complete")
     @ResponseStatus(HttpStatus.OK)
     fun complete(@PathVariable id: Long): TodoResponse = toResponse(todoService.complete(id));
 
