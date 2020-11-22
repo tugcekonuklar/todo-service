@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 
-@CrossOrigin(origins = arrayOf("*"), allowedHeaders = arrayOf("*"), methods = arrayOf(RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PATCH,RequestMethod.HEAD,RequestMethod.POST,RequestMethod.PUT,RequestMethod.OPTIONS) )
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"], methods = [RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.HEAD, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS])
 @Slf4j
 @RestController
 @RequestMapping(value = ["api/todos"])
