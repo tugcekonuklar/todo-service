@@ -33,9 +33,13 @@ class TodoController(val todoService: TodoService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody request: TodoRequest): TodoResponse = toResponse(todoService.create(toCreateCommand(request)));
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun update(@RequestBody request: TodoUpdateRequest): TodoResponse = toResponse(todoService.update(toUpdateCommand(request)));
+    fun update(@RequestBody request: TodoUpdateRequest, @PathVariable id: Long): TodoResponse = toResponse(todoService.update(toUpdateCommand(request,id)));
+
+    @PatchMapping("/{id}/complete")
+    @ResponseStatus(HttpStatus.OK)
+    fun complete(@PathVariable id: Long): TodoResponse = toResponse(todoService.complete(id));
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -47,6 +51,6 @@ class TodoController(val todoService: TodoService) {
     fun toCreateCommand(request: TodoRequest): CreateCommand =
             CreateCommand(request.title, request.content, request.dueDate)
 
-    fun toUpdateCommand(request: TodoUpdateRequest): UpdateTodoCommand =
-            UpdateTodoCommand(request.id, request.title, request.content, request.dueDate)
+    fun toUpdateCommand(request: TodoUpdateRequest, id: Long): UpdateTodoCommand =
+            UpdateTodoCommand(id, request.title, request.content, request.dueDate)
 }
