@@ -1,5 +1,6 @@
 package com.todo.service.service
 
+import com.todo.service.domain.Status
 import com.todo.service.domain.Todo
 
 interface TodoService {
@@ -7,6 +8,6 @@ interface TodoService {
     fun retrieveById(id: Long): Todo
     fun create(command: CreateCommand): Todo
     fun update(command: UpdateTodoCommand): Todo
-    fun complete(id: Long): Todo
+    fun updateStatus(id: Long, status: Status): Todo
     fun delete(id: Long)
 }

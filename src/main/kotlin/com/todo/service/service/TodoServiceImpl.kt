@@ -26,9 +26,9 @@ class TodoServiceImpl(val todoRepository: TodoRepository) : TodoService {
         return todoRepository.update(UpdateCommand(command.id, command.title, command.content, Status.UPDATED, command.dueDate, Instant.now(), todo.createdAt))
     }
 
-    override fun complete(id: Long): Todo {
+    override fun updateStatus(id: Long, status: Status): Todo {
         val todo = retrieveById(id);
-        return todoRepository.update(UpdateCommand(todo.id!!, todo.title, todo.content, Status.COMPLETED, todo.dueDate, Instant.now(), todo.createdAt))
+        return todoRepository.update(UpdateCommand(todo.id!!, todo.title, todo.content, status, todo.dueDate, Instant.now(), todo.createdAt))
     }
 
     override fun delete(id: Long) {

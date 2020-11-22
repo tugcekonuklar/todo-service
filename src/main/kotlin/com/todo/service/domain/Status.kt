@@ -4,5 +4,6 @@ enum class Status {
     NEW,
     UPDATED,
     COMPLETED,
+    ACTIVATED,
     DELETED
 }

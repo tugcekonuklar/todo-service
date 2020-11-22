@@ -3,6 +3,7 @@ package com.todo.service.api
 import com.todo.service.api.dto.TodoRequest
 import com.todo.service.api.dto.TodoResponse
 import com.todo.service.api.dto.TodoUpdateRequest
+import com.todo.service.domain.Status
 import com.todo.service.domain.Todo
 import com.todo.service.service.CreateCommand
 import com.todo.service.service.TodoService
@@ -35,11 +36,15 @@ class TodoController(val todoService: TodoService) {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun update(@RequestBody request: TodoUpdateRequest, @PathVariable id: Long): TodoResponse = toResponse(todoService.update(toUpdateCommand(request,id)));
+    fun update(@RequestBody request: TodoUpdateRequest, @PathVariable id: Long): TodoResponse = toResponse(todoService.update(toUpdateCommand(request, id)));
 
-    @PutMapping("/{id}/complete")
+    @PatchMapping("/{id}/complete")
     @ResponseStatus(HttpStatus.OK)
-    fun complete(@PathVariable id: Long): TodoResponse = toResponse(todoService.complete(id));
+    fun complete(@PathVariable id: Long): TodoResponse = toResponse(todoService.updateStatus(id, Status.COMPLETED));
+
+    @PatchMapping("/{id}/activate")
+    @ResponseStatus(HttpStatus.OK)
+    fun activated(@PathVariable id: Long): TodoResponse = toResponse(todoService.updateStatus(id, Status.ACTIVATED));
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
